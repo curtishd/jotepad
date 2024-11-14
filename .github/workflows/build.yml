@@ -1,9 +1,7 @@
 name: Java CI with Maven
-
 on:
   push:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +21,9 @@ jobs:
           sudo update-alternatives --install /usr/bin/mvn mvn /usr/local/apache-maven/bin/mvn 1
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - run: mkdir staging && cp target/*.jar staging
+      - name: upload workflow
+        run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v4
         with:
-          name: Package
+          name: ExecutableJar
           path: staging
