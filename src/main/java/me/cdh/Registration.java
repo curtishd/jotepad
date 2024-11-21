@@ -186,7 +186,12 @@ public enum Registration {
             var bufferIndex = tabPane.getSelectedIndex();
             if (bufferIndex != -1 && fileToSave.exists()) {
                 var content = bufferList.get(bufferIndex).getText();
-                var overwrite = JOptionPane.showConfirmDialog(null, "File is exists,cover it or not?", "Current file", JOptionPane.YES_NO_OPTION);
+                var overwrite = JOptionPane.showConfirmDialog(
+                        null,
+                        "File is exists,cover it or not?",
+                        "Current file",
+                        JOptionPane.YES_NO_OPTION
+                );
                 if (overwrite == JOptionPane.YES_NO_OPTION) {
                     try (var writer = new FileWriter(fileToSave, true)) {
                         writer.write(content);
