@@ -4,9 +4,7 @@ import static me.cdh.Utils.defaultTitle;
 import static me.cdh.Utils.scaleImage;
 import static me.cdh.Utils.tabFont;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
