@@ -9,11 +9,9 @@ import static me.cdh.Utils.*;
 
 public final class EditArea extends JTextArea {
 
-    private final JMenuItem cut;
-    private final JMenuItem copy;
-    private final JMenuItem paste;
+    private final JMenuItem cut, copy, paste;
     private final JPopupMenu rightClickMenu;
-    
+
     {
         cut = new JMenuItem("Cut") {{
             addActionListener(e -> EditArea.super.cut());

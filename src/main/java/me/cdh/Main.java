@@ -27,37 +27,31 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 public final class Main {
 
-    static final JFrame mainUI;
+    public static final JFrame mainUI;
 
-    static final JMenuBar menuBar;
-    static final JMenu menu;
-    static final JMenu settings;
+    public static final JMenuBar menuBar;
+    public static final JMenu menu, settings, theme;
 
-    static final JMenuItem newFile;
-    static final JMenuItem open;
-    static final JMenuItem closeCurrPage;
-    static final JMenuItem searchAndReplace;
-    static final JMenuItem save;
-    static final JMenuItem saveAs;
-    static final JMenuItem exit;
+    public static final JMenuItem newFile, open, closeCurrPage, searchAndReplace, save, saveAs, exit;
 
-    static final JTabbedPane tabPane;
-    static final EditArea textArea;
+    public static final JTabbedPane tabPane;
+    public static final EditArea textArea;
 
-    static final List<EditArea> bufferList;
-    static final JScrollPane displayTextPane;
+    public static final List<EditArea> bufferList;
+    public static final JScrollPane displayTextPane;
 
-    static final JLabel lineDisplay;
-    static final JButton indentBtn;
-    static final JPanel statusBar;
+    public static final JLabel lineDisplay;
+    public static final JButton indentBtn;
+    public static final JPanel statusBar;
 
     static {
         FlatMacDarkLaf.setup();
         mainUI = new JFrame();
         menuBar = new JMenuBar();
         menu = new JMenu();
-        menu.setIcon(scaleImage("menu.png"));
+        menu.setIcon(scaleImage("me/cdh/menu.svg"));
         settings = new JMenu("Settings");
+        theme = new JMenu("Theme");
         newFile = new JMenuItem("New");
         open = new JMenuItem("Open");
         closeCurrPage = new JMenuItem("Close Current Page");
@@ -79,7 +73,7 @@ public final class Main {
                         setFont(tabFont);
                     }
                 }, BorderLayout.CENTER);
-                add(new JButton(scaleImage("close.png")) {
+                add(new JButton(scaleImage("me/cdh/close.svg")) {
                     {
                         setFocusPainted(false);
                         setContentAreaFilled(false);
@@ -144,6 +138,7 @@ public final class Main {
         menu.add(newFile);
         menu.add(open);
         menu.add(settings);
+        settings.add(theme);
         menu.addSeparator();
         menu.add(save);
         menu.add(saveAs);

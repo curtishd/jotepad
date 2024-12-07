@@ -23,6 +23,11 @@ public enum Registration {
         saveBtnRegistration();
         saveAsBtnRegistration();
         exitBtnAction();
+        themeChange();
+    }
+
+    static void themeChange() {
+
     }
 
     static void labelPopup(String message) {
@@ -154,7 +159,7 @@ public enum Registration {
     }
 
     static Container deleteBtnInTabRegistration(String label) {
-        var btn = new JButton(scaleImage("close.png"));
+        var btn = new JButton(scaleImage("me/cdh/close.svg"));
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(false);
         var container = new Container() {{
