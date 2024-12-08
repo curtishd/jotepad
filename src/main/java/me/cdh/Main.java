@@ -7,6 +7,10 @@ import static me.cdh.Utils.tabFont;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,5 +166,18 @@ public final class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::init);
+        if (args.length > 0 && !args[0].isBlank()) {
+            var filePath = Path.of(args[0]).toAbsolutePath();
+            var buildStr = new StringBuilder();
+            try (var reader = Files.newBufferedReader(filePath)) {
+                reader.lines().forEach(str -> {
+                    buildStr.append(str);
+                    buildStr.append("\n");
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            bufferList.getFirst().setText(buildStr.toString());
+        }
     }
 }
