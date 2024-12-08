@@ -26,7 +26,7 @@ public enum Utils {
             textFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(REGULAR_FONT)))
                     .deriveFont(14f);
             tabFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(ITALIC_FONT)))
-                    .deriveFont(14f);
+                    .deriveFont(12f);
             messageBoxFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(BOLD_FONT)))
                     .deriveFont(22f);
         } catch (FontFormatException | IOException e) {
