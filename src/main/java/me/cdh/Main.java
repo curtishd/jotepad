@@ -1,6 +1,6 @@
 package me.cdh;
 
-import static me.cdh.Utils.defaultTitle;
+import static me.cdh.Utils.DEFAULT_TITLE;
 import static me.cdh.Utils.scaleImage;
 import static me.cdh.Utils.tabFont;
 
@@ -10,27 +10,16 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 public final class Main {
 
     public static final JFrame mainUI;
-
     public static final JMenuBar menuBar;
     public static final JMenu menu, settings, theme;
+    public static final JRadioButtonMenuItem light, dark;
 
     public static final JMenuItem newFile, open, closeCurrPage, searchAndReplace, save, saveAs, exit;
 
@@ -49,9 +38,14 @@ public final class Main {
         mainUI = new JFrame();
         menuBar = new JMenuBar();
         menu = new JMenu();
-        menu.setIcon(scaleImage("me/cdh/menu.svg"));
+        menu.setIcon(scaleImage("me/cdh/img/menu.svg"));
         settings = new JMenu("Settings");
         theme = new JMenu("Theme");
+        light = new JRadioButtonMenuItem("Light");
+        dark = new JRadioButtonMenuItem("Dark");
+        var bGroup = new ButtonGroup();
+        bGroup.add(light);
+        bGroup.add(dark);
         newFile = new JMenuItem("New");
         open = new JMenuItem("Open");
         closeCurrPage = new JMenuItem("Close Current Page");
@@ -63,17 +57,17 @@ public final class Main {
         textArea = new EditArea();
         tabPane = new JTabbedPane(JTabbedPane.TOP);
         displayTextPane = new JScrollPane(bufferList.getFirst());
-        tabPane.addTab(defaultTitle, displayTextPane);
+        tabPane.addTab(DEFAULT_TITLE, displayTextPane);
         tabPane.setTabComponentAt(0, new Container() {
             {
                 setLayout(new BorderLayout());
-                add(new JLabel(defaultTitle) {
+                add(new JLabel(DEFAULT_TITLE) {
                     {
                         setSize(150, 20);
                         setFont(tabFont);
                     }
                 }, BorderLayout.CENTER);
-                add(new JButton(scaleImage("me/cdh/close.svg")) {
+                add(new JButton(scaleImage("me/cdh/img/close.svg")) {
                     {
                         setFocusPainted(false);
                         setContentAreaFilled(false);
@@ -111,6 +105,9 @@ public final class Main {
                 addActionListener(e -> pop.show(this, 0, getHeight()));
             }
         };
+        var statusBarBox = Box.createHorizontalBox();
+        statusBarBox.add(new JLabel(Utils.ENCODING));
+        statusBarBox.add(indentBtn);
         statusBar = new JPanel() {
             {
                 setLayout(new BorderLayout());
@@ -118,7 +115,7 @@ public final class Main {
                 dimension.height = 18;
                 setPreferredSize(dimension);
                 add(lineDisplay, BorderLayout.WEST);
-                add(indentBtn, BorderLayout.EAST);
+                add(statusBarBox, BorderLayout.EAST);
             }
         };
         searchAndReplace = new JMenuItem();
@@ -139,6 +136,8 @@ public final class Main {
         menu.add(open);
         menu.add(settings);
         settings.add(theme);
+        theme.add(light);
+        theme.add(dark);
         menu.addSeparator();
         menu.add(save);
         menu.add(saveAs);

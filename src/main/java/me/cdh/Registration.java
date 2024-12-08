@@ -1,5 +1,10 @@
 package me.cdh;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
@@ -27,7 +32,18 @@ public enum Registration {
     }
 
     static void themeChange() {
-
+        dark.addActionListener(e -> EventQueue.invokeLater(() -> {
+            FlatAnimatedLafChange.showSnapshot();
+            FlatMacDarkLaf.setup();
+            FlatLaf.updateUI();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        }));
+        light.addActionListener(e -> EventQueue.invokeLater(() -> {
+            FlatAnimatedLafChange.showSnapshot();
+            FlatMacLightLaf.setup();
+            FlatLaf.updateUI();
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+        }));
     }
 
     static void labelPopup(String message) {
@@ -73,7 +89,7 @@ public enum Registration {
 
     static void createFileBtnRegistration() {
         newFile.addActionListener(e -> {
-            var container = deleteBtnInTabRegistration(defaultTitle);
+            var container = deleteBtnInTabRegistration(DEFAULT_TITLE);
             tabPane.addTab(null, new JScrollPane(new EditArea()));
             var index = tabPane.getSelectedIndex();
             if (index != -1) {
@@ -159,7 +175,7 @@ public enum Registration {
     }
 
     static Container deleteBtnInTabRegistration(String label) {
-        var btn = new JButton(scaleImage("me/cdh/close.svg"));
+        var btn = new JButton(scaleImage("me/cdh/img/close.svg"));
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(false);
         var container = new Container() {{
@@ -191,12 +207,7 @@ public enum Registration {
             var bufferIndex = tabPane.getSelectedIndex();
             if (bufferIndex != -1 && fileToSave.exists()) {
                 var content = bufferList.get(bufferIndex).getText();
-                var overwrite = JOptionPane.showConfirmDialog(
-                        null,
-                        "File is exists,cover it or not?",
-                        "Current file",
-                        JOptionPane.YES_NO_OPTION
-                );
+                var overwrite = JOptionPane.showConfirmDialog(null, "File is exists,cover it or not?", "Current file", JOptionPane.YES_NO_OPTION);
                 if (overwrite == JOptionPane.YES_NO_OPTION) {
                     try (var writer = new FileWriter(fileToSave, true)) {
                         writer.write(content);
