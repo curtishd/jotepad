@@ -1,0 +1,29 @@
+name: Java CI with Maven
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Install Maven 3.9.9
+        run: |
+          wget https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+          tar -xvf apache-maven-3.9.9-bin.tar.gz
+          sudo mv apache-maven-3.9.9 /usr/local/apache-maven
+          rm apache-maven-3.9.9-bin.tar.gz
+          sudo update-alternatives --install /usr/bin/mvn mvn /usr/local/apache-maven/bin/mvn 1
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: upload workflow
+        run: mkdir staging && cp target/*.jar staging
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ExecutableJar
+          path: staging
