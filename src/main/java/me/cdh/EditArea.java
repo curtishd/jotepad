@@ -1,10 +1,13 @@
 package me.cdh;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -34,10 +37,25 @@ public final class EditArea extends JTextArea {
         setWrapStyleWord(true);
         setTabSize(4);
         setFont(textFont);
+        getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                Main.lineDisplay.setText("Total Lines: " + getLineCount());
+            }
+        });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Main.lineDisplay.setText("Total Lines: " + getLineCount());
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     showPopupMenu(e);
                 }

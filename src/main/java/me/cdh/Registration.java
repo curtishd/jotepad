@@ -18,7 +18,7 @@ import static me.cdh.Utils.*;
 
 public enum Registration {
     INSTANCE;
-    private static File userSelectedFile;
+    static File userSelectedFile;
     private static final Logger log = Logger.getLogger("Listener logger");
 
     void registerMenuItemListener() {
@@ -161,7 +161,7 @@ public enum Registration {
     }
 
     static void saveAsBtnRegistration() {
-        saveAs.addActionListener(e -> saveFile());
+        saveAs.addActionListener(e -> saveAsFile());
     }
 
     static void closeCurrPageBtnRegistration() {
@@ -198,47 +198,45 @@ public enum Registration {
     }
 
     static void saveFile() {
-        var chooser = new JFileChooser();
+        var idx = tabPane.getSelectedIndex();
+        if (idx != -1 && userSelectedFile != null && userSelectedFile.isFile() && userSelectedFile.getAbsoluteFile().exists()) {
+            var filePath = userSelectedFile.getAbsolutePath();
+            var contentToWrite = bufferList.get(idx).getText();
+            try (var writer = new FileWriter(filePath)) {
+                writer.write(contentToWrite);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else saveAsFile();
+    }
+
+    static void saveAsFile() {
+        var chooser = new JFileChooser() {{
+            setDialogTitle("Save File");
+        }};
         var result = chooser.showSaveDialog(mainUI);
-        chooser.setDialogTitle("Save File");
         if (result == JFileChooser.APPROVE_OPTION) {
             var fileToSave = chooser.getSelectedFile();
             var fileName = fileToSave.getName();
-            var bufferIndex = tabPane.getSelectedIndex();
-            if (bufferIndex != -1 && fileToSave.exists()) {
-                var content = bufferList.get(bufferIndex).getText();
-                var overwrite = JOptionPane.showConfirmDialog(null, "File is exists,cover it or not?", "Current file", JOptionPane.YES_NO_OPTION);
-                if (overwrite == JOptionPane.YES_NO_OPTION) {
-                    try (var writer = new FileWriter(fileToSave, true)) {
+            var idx = tabPane.getSelectedIndex();
+            if (idx != -1 && !fileToSave.exists()) {
+                var content = bufferList.get(idx).getText();
+                try (var writer = new FileWriter(fileToSave)) {
+                    writer.write(content);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (idx != -1 && fileToSave.exists()) {
+                var option = JOptionPane.showConfirmDialog(null, "File is exist, cover it or not?", "Current file", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    var content = bufferList.get(idx).getText();
+                    try (var writer = new FileWriter(fileToSave)) {
                         writer.write(content);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    changeTabPaneTitle(fileName);
                 } else log.info("Save cancel");
-            } else {
-                var fileAbsolutePath = fileToSave.getAbsolutePath();
-                var file = new File(fileAbsolutePath);
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    throw new RuntimeException("create file fail");
-                }
-                var content = bufferList.get(bufferIndex).getText();
-                try (var writer = new FileWriter(file)) {
-                    writer.write(content);
-                } catch (IOException e) {
-                    throw new RuntimeException("write fail");
-                }
-                changeTabPaneTitle(fileName);
             }
         }
-    }
-
-    static void changeTabPaneTitle(String fileName) {
-        var container = (Container) tabPane.getTabComponentAt(tabPane.getSelectedIndex());
-        var label = (JLabel) container.getComponent(0);
-        label.setText(fileName);
-        labelPopup("Saved");
     }
 }

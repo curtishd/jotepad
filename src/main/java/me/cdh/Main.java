@@ -168,6 +168,7 @@ public final class Main {
         SwingUtilities.invokeLater(Main::init);
         if (args.length > 0 && !args[0].isBlank()) {
             var filePath = Path.of(args[0]).toAbsolutePath();
+            Registration.userSelectedFile = filePath.toFile();
             var buildStr = new StringBuilder();
             var container = (Container) tabPane.getTabComponentAt(tabPane.getSelectedIndex());
             var label = (JLabel) container.getComponent(0);
