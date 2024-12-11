@@ -159,7 +159,7 @@ public final class Main {
         mainUI.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent e) {
-                Registration.exitOrNot();
+                System.exit(0);
             }
         });
     }

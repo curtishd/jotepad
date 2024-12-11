@@ -74,17 +74,8 @@ public enum Registration {
         }, 2000L, 1L);
     }
 
-    static void exitOrNot() {
-        for (int i = 0; i < tabPane.getTabCount(); i++) {
-            if (!bufferList.get(i).getText().isBlank()) {
-                var result = JOptionPane.showConfirmDialog(null, "Are you sure to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
-                if (result == JOptionPane.YES_NO_OPTION) System.exit(0);
-            } else System.exit(0);
-        }
-    }
-
     static void exitBtnAction() {
-        exit.addActionListener(e -> exitOrNot());
+        exit.addActionListener(e -> System.exit(0));
     }
 
     static void createFileBtnRegistration() {
@@ -109,7 +100,7 @@ public enum Registration {
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 userSelectedFile = chooser.getSelectedFile();
                 tabPane.addTab(null, new JScrollPane(currentTextArea));
-                bufferList.add(currentTextArea);
+                bufferList.add(new EditArea());
                 for (int i = 0; i < tabPane.getTabCount(); i++) {
                     if (tabPane.getTitleAt(i).equals(chooser.getSelectedFile().getName())) {
                         labelPopup("File is already open!");
@@ -129,9 +120,8 @@ public enum Registration {
                     while ((line = reader.readLine()) != null) {
                         content.append(line);
                         content.append("\n");
-                        currentTextArea.append(line);
-                        currentTextArea.append("\n");
                     }
+                    currentTextArea.append(content.toString());
                     bufferList.get(curIndex).setText(content.toString());
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

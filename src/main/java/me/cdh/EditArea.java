@@ -17,6 +17,7 @@ public final class EditArea extends JTextArea {
 
     private final JMenuItem cut, copy, paste;
     private final JPopupMenu rightClickMenu;
+    private boolean isModified;
 
     public EditArea() {
         cut = new JMenuItem("Cut") {{
@@ -38,14 +39,17 @@ public final class EditArea extends JTextArea {
         setTabSize(4);
         setFont(textFont);
         getDocument().addDocumentListener(new DocumentListener() {
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 changedUpdate(e);
+                isModified = true;
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 changedUpdate(e);
+                isModified = true;
             }
 
             @Override
@@ -71,6 +75,10 @@ public final class EditArea extends JTextArea {
                 showPopupMenu(e);
             }
         });
+    }
+
+    public boolean isModified() {
+        return isModified;
     }
 
     private void showPopupMenu(MouseEvent e) {

@@ -12,26 +12,10 @@ import java.util.Objects;
 public enum Utils {
     ;
     public static final String DEFAULT_TITLE = "New File";
-    private static final String REGULAR_FONT = "/me/cdh/font/HackNerdFont-Regular.ttf";
-    private static final String ITALIC_FONT = "/me/cdh/font/HackNerdFont-Italic.ttf";
-    private static final String BOLD_FONT = "/me/cdh/font/HackNerdFont-Bold.ttf";
     public static final String ENCODING = Charset.defaultCharset().displayName();
-    public static final Font messageBoxFont;
-    public static final Font tabFont;
-    public static final Font textFont;
-
-    static {
-        try {
-            textFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(REGULAR_FONT)))
-                    .deriveFont(14f);
-            tabFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(ITALIC_FONT)))
-                    .deriveFont(12f);
-            messageBoxFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getResourceAsStream(BOLD_FONT)))
-                    .deriveFont(22f);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static final Font textFont = new Font("Cascadia Mono", Font.PLAIN, 16);
+    public static final Font tabFont = new Font("Cascadia Mono", Font.PLAIN, 14);
+    public static final Font messageBoxFont = new Font("Cascadia Mono", Font.PLAIN, 22);
 
     public static ImageIcon scaleImage(String res) {
         var icon = new FlatSVGIcon(res, 0.1f).getImage();
